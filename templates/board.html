@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>Chat Room</h3>
+    <div id="msgs" style="height:200px; overflow-y:auto; text-align:left; border:1px solid #eee; padding:5px; margin-bottom:10px;"></div>
+    <input type="text" id="m" placeholder="Message">
+    <button onclick="send()">Send</button>
+    <script>
+        const db = firebase.database().ref('chats');
+        db.limitToLast(10).on('child_added', (s) => {
+            const d = s.val();
+            document.getElementById('msgs').innerHTML += `<div><b>${d.u}:</b> ${d.t}</div>`;
+        });
+        function send() {
+            const t = document.getElementById('m').value;
+            const u = firebase.auth().currentUser.email.split('@')[0];
+            if(t) { db.push({ u: u, t: t }); document.getElementById('m').value=''; }
+        }
+    </script>
+{% endblock %}
