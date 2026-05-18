@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Register</h2>
+    <input type="text" id="acc" placeholder="New Account Number">
+    <input type="password" id="pw" placeholder="Password (6+ chars)">
+    <button onclick="reg()">Sign Up</button>
+    <p><a href="/">Back</a></p>
+    <script>
+        function reg() {
+            const email = document.getElementById('acc').value + "@pwa.com";
+            const pass = document.getElementById('pw').value;
+            firebase.auth().createUserWithEmailAndPassword(email, pass)
+                .then(() => { alert("Success!"); window.location.href="/"; })
+                .catch(e => alert(e.message));
+        }
+    </script>
+{% endblock %}
